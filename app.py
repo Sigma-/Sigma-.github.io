@@ -1,3 +1,11 @@
+<<<<<<< HEAD
+=======
+# -*- coding: utf-8 -*-
+
+# Run this app with `python app.py` and
+# visit http://127.0.0.1:8050/ in your web browser.
+
+>>>>>>> aeb4dcd727552b6ed020e11b62d2f4aac639f409
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
