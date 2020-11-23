@@ -20,8 +20,8 @@ app.layout = dbc.Alert(
     "Hello, Bootstrap!", className="m-5"
 )
 px.set_mapbox_access_token("pk.eyJ1IjoibmFubzAxIiwiYSI6ImNraHVlYjQ4aDFidzYyeHBiemZlZ2d3d20ifQ.P6e2_ZATNHTAb6BWuadxFw")
-df = px.data.carshare()
-fig = px.scatter_mapbox(df, lat="centroid_lat", lon="centroid_lon",     color="peak_hour", size="car_hours",
+df = pd.read_json(r'C:/Users/Nano/Documents/dash-project/Visu-group8/Dataset/fossils.json')
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", text="name",
                   color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=10)
 fig.show()
 
