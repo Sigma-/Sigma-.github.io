@@ -16,14 +16,25 @@ app = dash.Dash(
 )
 
 
-app.layout = dbc.Alert(
-    "Hello, Bootstrap!", className="m-5"
-)
 px.set_mapbox_access_token("pk.eyJ1IjoibmFubzAxIiwiYSI6ImNraHVlYjQ4aDFidzYyeHBiemZlZ2d3d20ifQ.P6e2_ZATNHTAb6BWuadxFw")
-df = pd.read_json(r'C:/Users/Nano/Documents/dash-project/Visu-group8/Dataset/fossils.json')
-fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", text="name",
+df = pd.read_json(r'Dataset/fossils.json')
+fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
                   color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=10)
-fig.show()
+
+#Layout à modifier 
+app.layout = html.Div(children=[
+    html.H1(children='VISUDINO'),
+
+    html.Div(children='''
+        Dash: A web application framework for Python.
+    '''),
+    dbc.Alert("Hello, Bootstrap!", className="m-5"),
+
+    dcc.Graph(
+        id='example-graph',
+        figure=fig
+    )
+])
 
 if __name__ == '__main__':
-    app.run_server(debug=True)
+    app.run_server(debug=True, use_reloader=False)
