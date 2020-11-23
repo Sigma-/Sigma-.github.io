@@ -2,7 +2,7 @@
 
 
 
-###Pour commit vos changements sur VOTRE BRANCHE :
+### Pour commit vos changements sur VOTRE BRANCHE :
 
 ```sh
 $ git checkout NOM_DE_VOTRE_BRANCHE
@@ -11,13 +11,13 @@ $ git commit -m "VOTRE_MESSAGE"
 $ git push
 ```
 
-###Si vous n'avez pas la bonne version, soit :
+### Si vous n'avez pas la bonne version, soit :
 
 ```sh
 $ git pull
 ```
 
-###Sinon :
+### Sinon :
 ```sh
 $ git reset
 ```
