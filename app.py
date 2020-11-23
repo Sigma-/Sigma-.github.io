@@ -21,20 +21,42 @@ df = pd.read_json(r'Dataset/fossils.json')
 fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
                   color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=10)
 
-#Layout à modifier 
-app.layout = html.Div(children=[
-    html.H1(children='VISUDINO'),
 
-    html.Div(children='''
-        Dash: A web application framework for Python.
-    '''),
-    dbc.Alert("Hello, Bootstrap!", className="m-5"),
+divSlicer = html.Div([
+    dcc.Slider(
+    min=0,
+    max=10,
+    step=None,
+    marks={
+        0: '0 °F',
+        3: '3 °F',
+        5: '5 °F',
+        7.65: '7.65 °F',
+        10: '10 °F'
+    },
+    value=5
+)], id = "slicer")
 
-    dcc.Graph(
+#https://dash-bootstrap-components.opensource.faculty.ai/docs/components/card/
+divCards = html.Div([html.P('Cards')])
+
+divMap = dcc.Graph(
         id='example-graph',
         figure=fig
     )
+
+divTimeline = html.Div([html.P('Timeline')])
+#Layout à modifier 
+
+app.layout = html.Div(children=[
+    html.H1(children='VISUDINO INGEN'),
+
+    divSlicer,  
+    divCards,
+    divMap,
+    divTimeline
+    
 ])
 
 if __name__ == '__main__':
-    app.run_server(debug=True, use_reloader=False)
+    app.run_server(debug=True, use_reloader=True)
