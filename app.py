@@ -9,7 +9,7 @@ import dash_bootstrap_components as dbc
 import dash_html_components as html
 import plotly.express as px
 import pandas as pd
-
+import slicer
 
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP]
@@ -22,18 +22,66 @@ fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name = "name"
                   color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=10)
 
 
+
+df_fossil = pd.read_json(r'Dataset/fossils.json')
+df_dino = pd.read_csv(r'Dataset/dinosaurs.csv')
+
+# print(df_fossil.head())
+# print(df_dino.head())
+# print(df_dino.columns)
+# print(df_fossil.columns)
+
+df_dino['first_letter'] = df_dino['dinosaur'].str[:1]
+
+first_letterlist = []
+first_letterlist = df_dino['first_letter'].unique()
+
+slicer_dictionary = {}
+keys = range(len(first_letterlist))
+
+for i in keys:
+    slicer_dictionary[i] = first_letterlist[i]
+
+print(slicer_dictionary)
+
+
+print(first_letterlist)
+# print(df['first_letter'])
+
+
+
+picked_letter = 'a'
+capitalized_letter = picked_letter.upper()
+print(capitalized_letter)
+genom = df_dino.loc[df_dino['first_letter'] == picked_letter]
+genom_list = genom['dinosaur'].unique()
+
+print(genom_list)
+genom_picked = genom_list[0]
+print("genom_picked")
+
+def mapping_genome_to_dino(genom_picked):
+
+    for i in range(0,len(df_fossil)):
+        fossil_entire_name = df_fossil['name'][i]
+        fossil_first_name = df_fossil['name'][i].split()[0].lower()
+        if genom_picked == fossil_first_name:
+            print(fossil_entire_name)
+
+
+ 
+mapping_genome_to_dino(genom_picked)
+
+
+
+
+
 divSlicer = html.Div([
     dcc.Slider(
     min=0,
     max=10,
     step=None,
-    marks={
-        0: '0 °F',
-        3: '3 °F',
-        5: '5 °F',
-        7.65: '7.65 °F',
-        10: '10 °F'
-    },
+    marks=slicer_dictionary ,
     value=5
 )], id = "slicer")
 
