@@ -9,7 +9,7 @@ import dash_bootstrap_components as dbc
 import dash_html_components as html
 import plotly.express as px
 import pandas as pd
-import slicer
+
 
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP]
@@ -31,10 +31,10 @@ df_dino = pd.read_csv(r'Dataset/dinosaurs.csv')
 # print(df_dino.columns)
 # print(df_fossil.columns)
 
-df_dino['first_letter'] = df_dino['dinosaur'].str[:1]
+first_letter = df_dino['dinosaur'].str[:1]
 
 first_letterlist = []
-first_letterlist = df_dino['first_letter'].unique()
+first_letterlist = first_letter.unique()
 
 slicer_dictionary = {}
 keys = range(len(first_letterlist))
@@ -45,15 +45,15 @@ for i in keys:
 print(slicer_dictionary)
 
 
-print(first_letterlist)
-# print(df['first_letter'])
-
+#print(f"First letter list: {first_letterlist}")
+#print(f"first letter: {first_letter}")
+print(f"Slicer dictionart: {slicer_dictionary}")
 
 
 picked_letter = 'a'
 capitalized_letter = picked_letter.upper()
-print(capitalized_letter)
-genom = df_dino.loc[df_dino['first_letter'] == picked_letter]
+print(F"Capitalized letter: {capitalized_letter}")
+genom = df_dino.loc[first_letter == picked_letter]
 genom_list = genom['dinosaur'].unique()
 
 print(genom_list)
@@ -71,8 +71,6 @@ def mapping_genome_to_dino(genom_picked):
 
  
 mapping_genome_to_dino(genom_picked)
-
-
 
 
 
