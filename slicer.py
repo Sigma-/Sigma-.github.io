@@ -1,48 +1,37 @@
 import pandas as pd
-df_fossil = pd.read_json(r'Dataset/fossils.json')
-df_dino = pd.read_csv(r'Dataset/dinosaurs.csv')
-
-# print(df_fossil.head())
-# print(df_dino.head())
-# print(df_dino.columns)
-# print(df_fossil.columns)
-
-df_dino['first_letter'] = df_dino['dinosaur'].str[:1]
-
-first_letterlist = []
-first_letterlist = df_dino['first_letter'].unique()
-#first_letterlist_ordered = first_letterlist.sort()
-
-#print(first_letterlist_ordered)
-print(first_letterlist)
-
-# # print(first_letterlist_ordered)
-# print(first_letterlist)
-# # print(df['first_letter'])
 
 
-# picked_letter = 'a'
-# capitalized_letter = picked_letter.upper()
-# print(capitalized_letter)
-# genom = df_dino.loc[df_dino['first_letter'] == picked_letter]
-# genom_list = genom['dinosaur'].unique()
+def get_dictionary(df_dino):
+    first_letter = df_dino['dinosaur'].str[:1]
 
-# print(genom_list)
-# genom_picked = genom_list[0]
-# print("genom_picked")
+    first_letterlist = []
+    first_letterlist = first_letter.unique()
 
-# def mapping_genome_to_dino(genom_picked):
+    slicer_dictionary = {}
+    keys = range(len(first_letterlist))
 
-#     for i in range(0,len(df_fossil)):
-#         fossil_entire_name = df_fossil['name'][i]
-#         fossil_first_name = df_fossil['name'][i].split()[0].lower()
-#         if genom_picked == fossil_first_name:
-#             print(fossil_entire_name)
+    for i in keys:
+        slicer_dictionary[i] = first_letterlist[i]
+    
+    return slicer_dictionary
+
+def show_genoms(selected_letter, df_dino):
+    return [dinoname for dinoname in df_dino['dinosaur'] if dinoname[:1] == selected_letter]
+
+    
+#genom_picked = genom_list[0]
+
+
+
+def mapping_genome_to_dino(genom_picked):
+    df_fossil = pd.read_json(r'Dataset/fossils.json')
+
+    for i in range(0,len(df_fossil)):
+        fossil_entire_name = df_fossil['name'][i]
+        fossil_first_name = df_fossil['name'][i].split()[0].lower()
+        if genom_picked == fossil_first_name:
+            print(fossil_entire_name)
 
 
  
-# mapping_genome_to_dino(genom_picked)
-
-
-
-    # if== df_fossil.loc[df_fossil['name']]
+#mapping_genome_to_dino(genom_picked)
