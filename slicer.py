@@ -25,13 +25,9 @@ def show_genoms(selected_letter, df_dino):
 
 def mapping_genome_to_dino(genom_picked):
     df_fossil = pd.read_json(r'Dataset/fossils.json')
-
-    for i in range(0,len(df_fossil)):
-        fossil_entire_name = df_fossil['name'][i]
-        fossil_first_name = df_fossil['name'][i].split()[0].lower()
-        if genom_picked == fossil_first_name:
-            print(fossil_entire_name)
-
+    
+    
+    return df_fossil.loc[df_fossil['name'].str.startswith(genom_picked.capitalize())]
 
  
 #mapping_genome_to_dino(genom_picked)

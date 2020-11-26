@@ -10,24 +10,27 @@ import dash_html_components as html
 import plotly.express as px
 import pandas as pd
 import slicer as sl
-
+import dash_core_components as dcc
+import dash_html_components as html
+from dash.dependencies import Input, Output, State, MATCH, ALL
+import time
 
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP]
 )
-
+app.config.suppress_callback_exceptions = True
 
 px.set_mapbox_access_token("pk.eyJ1IjoibmFubzAxIiwiYSI6ImNraHVlYjQ4aDFidzYyeHBiemZlZ2d3d20ifQ.P6e2_ZATNHTAb6BWuadxFw")
 df = pd.read_json(r'Dataset/fossils.json')
 fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
-                  color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=10)
+                  color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
 
 
 
 df_fossil = pd.read_json(r'Dataset/fossils.json')
 df_dino = pd.read_csv(r'Dataset/dinosaurs.csv')
 
-
+df_dino_names = [dinoname for dinoname in df_dino['dinosaur']]
 
 
 
@@ -42,29 +45,11 @@ divSlider = html.Div([
 )])
 
 #https://dash-bootstrap-components.opensource.faculty.ai/docs/components/card/
-divCards = html.Div([
-    dbc.Card([
-        dbc.CardImg(src=app.get_asset_url("Allosaurus.png"), top=True, style={"width": "200px", "height": "200px"}),
-        dbc.CardBody(
-            [
-                html.H4("Card title", className="card-title"),
-                html.P(
-                    "Some quick example text to build on the card title and "
-                    "make up the bulk of the card's content.",
-                    className="card-text",
-                ),
-                dbc.Button("Go somewhere", color="primary"),
-            ]
-        ),
-    ],
-    style={"width": "18rem"},
-)
+#divCards = 
 
-
-], id="dino-cards")
 
 divMap = dcc.Graph(
-        id='example-graph',
+        id='dino-map',
         figure=fig
     )
 
@@ -76,12 +61,18 @@ app.layout = html.Div(children=[
 
     divSlider,
 
-    html.Div(id='genom-list'),  
-    divCards,
+    html.Div(id='genom-list'),
+    dcc.Loading(
+        id="loading-1",
+        type="circle",
+        children =  html.Div(id='dino-cards')
+    ),
     divMap,
     divTimeline
     
 ])
+
+
 
 @app.callback(
     dash.dependencies.Output('genom-list', 'children'),
@@ -90,18 +81,82 @@ def display_genus_buttons(value):
     dico = sl.get_dictionary(df_dino)
     picked_letter = dico[value]
     genom_list = sl.show_genoms(picked_letter, df_dino)
+    
+    
 
-    genom_buttons = dbc.ButtonGroup([dbc.Button(name) for name in genom_list])
-    print(genom_buttons)
-
+    genom_buttons = dbc.Container(
+    [
+        dbc.RadioItems(
+            options=[{"label": v , "value" : v} for v in genom_list],
+            id="time-selector",
+            labelClassName="date-group-labels",
+            labelCheckedClassName="date-group-labels-checked",
+            className="date-group-items",
+            inline=True,
+        ),
+        html.P(id="output"),
+    ],
+    className="p-3",
+)
+    
     return genom_buttons
 
+@app.callback(Output("dino-cards", "children"), [Input("time-selector", "value")])
+def return_value(value):
+    if value != None: 
+        fig = px.scatter_mapbox(sl.mapping_genome_to_dino(value), lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
+                  color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
+
+        index_of_genom = df_dino.set_index("dinosaur").index.get_loc(f"{value}")
+        divCards =  dbc.Card([
+            dbc.CardImg(src=app.get_asset_url(f"{value}.png"), top=True, style={"width": "200px", "height": "200px"}),
+            dbc.CardBody(
+                [
+                    html.H4(f"{value}", className="card-title"),
+                    html.P(
+                        f"Zone : {df_dino['zone'][index_of_genom]}",
+                        className="card-text",
+                    ),
+                    html.P(
+                        f"Diet : {df_dino['diet'][index_of_genom]}",
+                        className="card-text",
+                    ),
+                    html.P(
+                        f"Size : {df_dino['size'][index_of_genom]}",
+                        className="card-text",
+                    ),
+                    html.P(
+                        f"Weight : {df_dino['weight'][index_of_genom]}",
+                        className="card-text",
+                    ),
+                    html.P(
+                        f"Speed : {df_dino['speed'][index_of_genom]}",
+                        className="card-text",
+                    ),
+    
+                    dbc.Button("Go somewhere", color="primary"),
+                ]
+                ),
+            ],
+            style={"width": "18rem"},
+            )
+        time.sleep(1)
+        return divCards
+
+"""@app.callback(Output("dino-map", "children"), [Input("time-selector", "value")])
+def"""
+"""@app.callback(
+    dash.dependencies.Output('dino-cards', 'children'),
+    [dash.dependencies.Input(dinoname, 'id') for dinoname in df_dino_names]
+)
+def dino_button_click(id):
+    print(id)"""
 
 """@app.callback(
     dash.dependencies.Output('dino-cards', 'children'),
-    [dash.dependencies.Input('genom-list', 'value')])
-def update_output(value):
-    #TOD"""
+    [dash.dependencies.Input('genom-list', 'id')])
+def update_output(id):
+    print(id)"""
 
 if __name__ == '__main__':
     app.run_server(debug=True, use_reloader=True, dev_tools_hot_reload=True)
