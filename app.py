@@ -145,10 +145,17 @@ def return_value(value):
 
 @app.callback(dash.dependencies.Output("dino-map", "figure"), [dash.dependencies.Input("genom-selector", "value")])
 def change_map(value):
-    fig = px.scatter_mapbox(sl.mapping_genome_to_dino(value), lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
+    if value == None : 
+        fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
-    fig.update_layout(transition_duration=500)
-    return fig
+        fig.update_layout(transition_duration=500)
+        return fig
+    else:    
+        fig = px.scatter_mapbox(sl.mapping_genome_to_dino(value), lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
+                        color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
+        fig.update_layout(transition_duration=500)
+        return fig
+
 
 if __name__ == '__main__':
     app.run_server(debug=True, use_reloader=True, dev_tools_hot_reload=True)
