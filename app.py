@@ -14,6 +14,8 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State, MATCH, ALL
 import time
+import plotly.graph_objects as go
+
 
 app = dash.Dash(
     external_stylesheets=[dbc.themes.BOOTSTRAP]
@@ -50,7 +52,7 @@ divSlider = html.Div([
 
 divMap = dcc.Graph(
         id='dino-map',
-        figure=fig
+        figure = fig
     )
 
 divTimeline = html.Div([html.P('Timeline')])
@@ -65,7 +67,7 @@ app.layout = html.Div(children=[
     dcc.Loading(
         id="loading-1",
         type="circle",
-        children =  html.Div(id='dino-cards')
+        children = html.Div(id='dino-cards')
     ),
     divMap,
     divTimeline
@@ -88,7 +90,7 @@ def display_genus_buttons(value):
     [
         dbc.RadioItems(
             options=[{"label": v , "value" : v} for v in genom_list],
-            id="time-selector",
+            id="genom-selector",
             labelClassName="date-group-labels",
             labelCheckedClassName="date-group-labels-checked",
             className="date-group-items",
@@ -101,12 +103,9 @@ def display_genus_buttons(value):
     
     return genom_buttons
 
-@app.callback(Output("dino-cards", "children"), [Input("time-selector", "value")])
+@app.callback(dash.dependencies.Output("dino-cards", "children"), [dash.dependencies.Input("genom-selector", "value")])
 def return_value(value):
     if value != None: 
-        fig = px.scatter_mapbox(sl.mapping_genome_to_dino(value), lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
-                  color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
-
         index_of_genom = df_dino.set_index("dinosaur").index.get_loc(f"{value}")
         divCards =  dbc.Card([
             dbc.CardImg(src=app.get_asset_url(f"{value}.png"), top=True, style={"width": "200px", "height": "200px"}),
@@ -143,20 +142,13 @@ def return_value(value):
         time.sleep(1)
         return divCards
 
-"""@app.callback(Output("dino-map", "children"), [Input("time-selector", "value")])
-def"""
-"""@app.callback(
-    dash.dependencies.Output('dino-cards', 'children'),
-    [dash.dependencies.Input(dinoname, 'id') for dinoname in df_dino_names]
-)
-def dino_button_click(id):
-    print(id)"""
 
-"""@app.callback(
-    dash.dependencies.Output('dino-cards', 'children'),
-    [dash.dependencies.Input('genom-list', 'id')])
-def update_output(id):
-    print(id)"""
+@app.callback(dash.dependencies.Output("dino-map", "figure"), [dash.dependencies.Input("genom-selector", "value")])
+def change_map(value):
+    fig = px.scatter_mapbox(sl.mapping_genome_to_dino(value), lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
+                    color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
+    fig.update_layout(transition_duration=500)
+    return fig
 
 if __name__ == '__main__':
     app.run_server(debug=True, use_reloader=True, dev_tools_hot_reload=True)
