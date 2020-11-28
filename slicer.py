@@ -31,3 +31,12 @@ def mapping_genome_to_dino(genom_picked):
 
  
 #mapping_genome_to_dino(genom_picked)
+
+def mapping_multiple_genom_to_dino(genom_list):
+    df_fossil = pd.read_json(r'Dataset/fossils.json')
+
+    genomes_picked_list = []
+    for genomes in genom_list:
+        genomes_picked_list.append(df_fossil.loc[df_fossil['name'].str.startswith(genomes.capitalize())])
+    return pd.concat(genomes_picked_list)
+

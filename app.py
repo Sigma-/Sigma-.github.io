@@ -84,7 +84,7 @@ def display_genus_buttons(value):
     picked_letter = dico[value]
     genom_list = sl.show_genoms(picked_letter, df_dino)
     
-    
+    print(sl.mapping_multiple_genom_to_dino(genom_list))
 
     genom_buttons = dbc.Container(
     [
@@ -159,4 +159,4 @@ def change_map(value):
 
 if __name__ == '__main__':
     app.run_server(debug=True, use_reloader=True, dev_tools_hot_reload=True)
-    
+
