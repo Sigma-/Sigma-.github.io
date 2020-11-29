@@ -27,9 +27,6 @@ df = pd.read_json(r'Dataset/fossils.json')
 fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
                   color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
 
-
-
-df_fossil = pd.read_json(r'Dataset/fossils.json')
 df_dino = pd.read_csv(r'Dataset/dinosaurs.csv')
 
 df_dino_names = [dinoname for dinoname in df_dino['dinosaur']]
@@ -83,8 +80,7 @@ def display_genus_buttons(value):
     dico = sl.get_dictionary(df_dino)
     picked_letter = dico[value]
     genom_list = sl.show_genoms(picked_letter, df_dino)
-    
-    print(sl.mapping_multiple_genom_to_dino(genom_list))
+
 
     genom_buttons = dbc.Container(
     [
@@ -143,18 +139,27 @@ def return_value(value):
         return divCards
 
 
-@app.callback(dash.dependencies.Output("dino-map", "figure"), [dash.dependencies.Input("genom-selector", "value")])
-def change_map(value):
-    if value == None : 
+@app.callback(dash.dependencies.Output("dino-map", "figure"), [dash.dependencies.Input("genom-selector", "value"), dash.dependencies.Input("slider", "value")])
+def change_map(value1, value2):
+    ctx = dash.callback_context
+    print(ctx.triggered[0]['prop_id'].split('.')[0] == "slider")
+    if value1 == None : 
         fig = px.scatter_mapbox(df, lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
                     color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
         fig.update_layout(transition_duration=500)
         return fig
+    elif ctx.triggered[0]['prop_id'].split('.')[0] == "slider":
+        fig = px.scatter_mapbox(sl.mapping_multiple_genom_to_dino(value1), lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
+                    color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
+        fig.update_layout(transition_duration=500)
+        return fig
+
     else:    
-        fig = px.scatter_mapbox(sl.mapping_genome_to_dino(value), lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
+        fig = px.scatter_mapbox(sl.mapping_genome_to_dino(value1), lat="latitude", lon="longitude", hover_name = "name", hover_data=["old_latitude", "old_longitude"],
                         color_continuous_scale=px.colors.cyclical.IceFire, size_max=15, zoom=1)
         fig.update_layout(transition_duration=500)
         return fig
+
 
 
 if __name__ == '__main__':
