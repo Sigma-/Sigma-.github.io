@@ -1,6 +1,8 @@
 .custom-control-label::after,
 .custom-control-label::before {
   display: none;
+  vertical-align: center;
+  margin-top: -1px;
 }
 
 .custom-control {
@@ -9,6 +11,7 @@
 
 .custom-control-inline {
   margin-right: 0;
+ 
 }
 
 .date-group-labels {
@@ -42,8 +45,37 @@
 .date-group-labels:hover {
   box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.2);
 }
-#dino-map{
-	width: 60%;
+
+#dino-map.dash-graph {
+	float: right;
+	width: 80%;
+	height:100%;
+}
+
+#dino-cards {
+	float: left;
+	width: 10%;
+	padding-left: 5%;
+	padding-top: 2.5%; 
+	text-align: center;
+}
+
+img {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	width: 50%;
+}
+
+#centre {
+	display: inline;
+}
+
+#genom-list {
+	margin-top: -1px;
+	vertical-align: middle;
+}
+#time-line {
 	position: fixed;
-	right: 5px;
+	bottom: 0;
 }
