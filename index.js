@@ -179,7 +179,7 @@ function showFossilData(fossil) {
     popup
         .setLngLat([fossil.longitude, fossil.latitude])
         .setHTML(`<div>
-        ${fossil.old_latitude}, ${fossil.old_longtitude}
+        ${fossil.old_latitude}, ${fossil.old_longitude}
         </div>`)
         .addTo(map);
 }
