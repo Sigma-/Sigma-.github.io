@@ -1,0 +1,15 @@
+#dino-image {
+    display: block;
+    max-width: 50vh;
+    max-height:40vh;
+    width: auto;
+    height: auto;
+}
+
+#map {
+    height: 69vh;
+}
+
+#timeline {
+    height: 30vh;
+}
