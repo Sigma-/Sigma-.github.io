@@ -7,7 +7,8 @@ mapboxgl.accessToken = "pk.eyJ1IjoibmFubzAxIiwiYSI6ImNraHVlYjQ4aDFidzYyeHBiemZlZ
  * size: string,
  * weight: string,
  * speed: string,
- * lived: string
+ * lived: string,
+ * price: string
  * }} dinosaur
  * 
  * @typedef {{
@@ -125,7 +126,17 @@ function loadDinos(data) {
     btnReset.style.marginLeft = "10px";
     btnGroup.append(btnReset);
 
-    btnReset.addEventListener("click", () =>{
+    btnReset.addEventListener("click", () => {
+        /** @type {HTMLImageElement} */
+        let img = document.getElementById("dino-image");
+        img.src = `img/jurassicworld.png`;
+        document.getElementById("dino-name").textContent = "No dinosaur selected";
+        document.getElementById("dino-feature-zone").textContent = "-";
+        document.getElementById("dino-feature-diet").textContent = "-";
+        document.getElementById("dino-feature-size").textContent = "-";
+        document.getElementById("dino-feature-weight").textContent = "-";
+        document.getElementById("dino-feature-speed").textContent = "-";
+        document.getElementById("dino-feature-price").textContent = "-";
         fossilMarkers.forEach((marker) => {
             marker.addTo(map);
         });
@@ -273,6 +284,7 @@ function showDinoCard(dinoname) {
     document.getElementById("dino-feature-size").textContent = dinoData.size;
     document.getElementById("dino-feature-weight").textContent = dinoData.weight;
     document.getElementById("dino-feature-speed").textContent = dinoData.speed;
+    document.getElementById("dino-feature-price").textContent = dinoData.price;
 
     fossilMarkers.forEach((marker) => {
         //Récupérer le nom du génus
@@ -296,7 +308,6 @@ function showFossilData(fossil) {
         ${fossil.name} <br />
         Current pos.: (${fossil.latitude}, ${fossil.longitude}) <br />
         Old pos.: (${fossil.old_latitude}, ${fossil.old_longitude}) <br />
-        Rank : ${fossil.rank}
         </div>`)
         .addTo(map);
 }
