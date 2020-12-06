@@ -226,8 +226,8 @@ function buildTimeLineDict(time) {
 
 function createMarker(options = {}) {
     let defaultOptions = {
-        width: 10,
-        height: 10,
+        width: 15,
+        height: 15,
         color: "#4040D0",//"rgba(60,60,220,0.8)"//
         opacity: 0.6
     };
