@@ -204,7 +204,7 @@ function loadTimeline(data) {
         })
         .label((d) => `${d.name} ${d.type}`)
         .color("color_hex")
-        //.excludeRoot(true)
+        .excludeRoot(true)
         .tooltipContent((d) => `From -${d.start} to -${d.end} Mil. years ago`)
         .minSegmentWidth(3)
         (timelineEl);
