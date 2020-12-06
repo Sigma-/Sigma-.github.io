@@ -88,9 +88,8 @@ Promise.all([dinoLoader, fossilLoader, timelineLoader]).then(([dinoData, fossilD
     loadMap(fossilData);
     loadTimeline(timelineData);
 
-    //Initialisation
-    /*showDinoList("A");
-    showDinoCard("Allosaurus");*/
+    showDinoList("A");
+    showDinoCard("Allosaurus");
 }).catch((error) => {
     console.log(error);
     //alert("Une erreur a eu lieu lors du chargement des données.");
@@ -112,13 +111,25 @@ function loadDinos(data) {
     let btnGroup = document.getElementById("letter-slider");
     initials.map((letter) => {
         let btn = document.createElement("button");
-        btn.classList.add("btn", "btn-primary", "dino-letter");
+        btn.classList.add("btn", "btn-info", "dino-letter");
         btn.textContent = letter.toUpperCase();
         btn.addEventListener("click", (ev) => {
             showDinoList(letter);
         });
         btnGroup.append(btn);
     })
+    let btnReset = document.createElement("button");
+    btnReset.classList.add("btn", "btn-dark", "dino-letter");
+    btnReset.id = "reset-btn";
+    btnReset.textContent = "Reset";
+    btnReset.style.marginLeft = "10px";
+    btnGroup.append(btnReset);
+
+    btnReset.addEventListener("click", () =>{
+        fossilMarkers.forEach((marker) => {
+            marker.addTo(map);
+        });
+    });
 
 };
 
@@ -183,7 +194,7 @@ function loadTimeline(data) {
         .label((d) => `${d.name} ${d.type}`)
         .color("color_hex")
         //.excludeRoot(true)
-        .tooltipContent((d) => `From ${d.start} to ${d.end}`)
+        .tooltipContent((d) => `From -${d.start} to -${d.end} Mil. years ago`)
         .minSegmentWidth(3)
         (timelineEl);
 
@@ -236,7 +247,7 @@ function showDinoList(letter) {
     let btnGroup = document.getElementById("dino-selector");
     validDinos.map((dino) => {
         let btn = document.createElement("button");
-        btn.classList.add("btn", "btn-primary", "dino-button");
+        btn.classList.add("btn", "btn-light", "dino-button");
         btn.textContent = dino.dinosaur;
         btn.addEventListener("click", (ev) => {
             showDinoCard(dino.dinosaur)
@@ -284,7 +295,8 @@ function showFossilData(fossil) {
         .setHTML(`<div>
         ${fossil.name} <br />
         Current pos.: (${fossil.latitude}, ${fossil.longitude}) <br />
-        Old pos.: (${fossil.old_latitude}, ${fossil.old_longitude})
+        Old pos.: (${fossil.old_latitude}, ${fossil.old_longitude}) <br />
+        Rank : ${fossil.rank}
         </div>`)
         .addTo(map);
 }

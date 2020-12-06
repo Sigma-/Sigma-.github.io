@@ -1,15 +1,24 @@
 #dino-image {
     display: block;
-    max-width: 50vh;
-    max-height:40vh;
+    max-width: 40vh;
+    max-height:30vh;
     width: auto;
     height: auto;
 }
 
 #map {
-    height: 69vh;
+    height: 65vh;
 }
 
 #timeline {
     height: 30vh;
+}
+.card{
+    width: 45vh;
+}
+#dino-selector{
+    max-width: 45vh;
+}
+.icicle-tooltip {
+    max-width: unset;
 }
