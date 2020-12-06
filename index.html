@@ -13,7 +13,7 @@
     <body>
         <div class="container-fluid main">
             <div class="row">
-                <div class="col">
+                <div class="col-4">
                     <div id="letter-slider" class="btn-group">
                         <!-- Filled in JS -->
                     </div>
@@ -23,24 +23,25 @@
                     <div id="dino-info" class="card">
                         <img id="dino-image" src="img/empty.png" class="card-img-top">
                         <div id="dino-features" class="card-body">
-                            <div>Zone: <span id="dino-feature-zone"></span></div>
-                            <div>Diet: <span id="dino-feature-diet"></span></div>
-                            <div>Size: <span id="dino-feature-size"></span></div>
-                            <div>Weight: <span id="dino-feature-weight"></span></div>
-                            <div>Speed: <span id="dino-feature-speed"></span></div>
+                            <h3 id="dino-name">Select a dinosaur</h3>
+                            <div>Zone: <span id="dino-feature-zone">-</span></div>
+                            <div>Diet: <span id="dino-feature-diet">-</span></div>
+                            <div>Size: <span id="dino-feature-size">-</span></div>
+                            <div>Weight: <span id="dino-feature-weight">-</span></div>
+                            <div>Speed: <span id="dino-feature-speed">-</span></div>
                         </div>
                     </div>
                 </div>
-                <div class="col container-fluid">
+                <div class="col-8 container-fluid">
                     <div class="row" id="map">
                         <!-- Filled in JS -->
                     </div>
-                    <div class="row container-fluid" id="timeline">
-                        <!-- Filled in JS -->
-                    </div>
+                    
                 </div>
             </div>
-            
+            <div class="row container-fluid" id="timeline">
+                <!-- Filled in JS -->
+            </div>
         </div>
         <!-- (Bootstrap) jQuery and JS bundle w/ Popper.js -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
