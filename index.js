@@ -89,8 +89,8 @@ Promise.all([dinoLoader, fossilLoader, timelineLoader]).then(([dinoData, fossilD
     loadMap(fossilData);
     loadTimeline(timelineData);
 
-    showDinoList("A");
-    showDinoCard("Allosaurus");
+    //showDinoList("A");
+    //showDinoCard("Allosaurus");
 }).catch((error) => {
     console.log(error);
     //alert("Une erreur a eu lieu lors du chargement des données.");
@@ -130,7 +130,7 @@ function loadDinos(data) {
         /** @type {HTMLImageElement} */
         let img = document.getElementById("dino-image");
         img.src = `img/jurassicworld.png`;
-        document.getElementById("dino-name").textContent = "No dinosaur selected";
+        document.getElementById("dino-name").textContent = "Select a dinosaur";
         document.getElementById("dino-feature-zone").textContent = "-";
         document.getElementById("dino-feature-diet").textContent = "-";
         document.getElementById("dino-feature-size").textContent = "-";

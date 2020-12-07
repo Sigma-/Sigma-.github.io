@@ -24,3 +24,7 @@
 .icicle-tooltip {
     max-width: unset !important;
 }
+
+#dino-name {
+    text-align: center;
+}
